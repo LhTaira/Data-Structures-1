@@ -1,9 +1,12 @@
 #include "neuronio.h"
+#define max 10
 
 int main() {
-    int max = 10;
+    
     int exitacao;
     double entradas[max], pesos[max], limiarT;
+
+    printf("Insira %d valores\n", max*2);
 
     for(int i=0; i<max; i++) {
         scanf("%lf", &entradas[i]);
@@ -13,6 +16,7 @@ int main() {
         scanf("%lf", &pesos[i]);
     }
     
+    printf("Insira o limiar T\n";
     scanf("%lf", &limiarT);
 
     fneuronio(entradas, pesos, &limiarT, max, &exitacao);
