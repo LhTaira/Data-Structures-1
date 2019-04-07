@@ -6,17 +6,17 @@ int main() {
     int exitacao;
     double entradas[max], pesos[max], limiarT;
 
-    printf("Insira %d valores\n", max*2);
-
+    printf("Insira os %d valores do vetor 'entradas'\n", max);
     for(int i=0; i<max; i++) {
         scanf("%lf", &entradas[i]);
     }
 
+    printf("Insira os %d valores do vetor 'pesos'\n", max);
     for(int i=0; i<max; i++) {
         scanf("%lf", &pesos[i]);
     }
     
-    printf("Insira o limiar T\n";
+    printf("Insira o valor do limiar T\n");
     scanf("%lf", &limiarT);
 
     fneuronio(entradas, pesos, &limiarT, max, &exitacao);
