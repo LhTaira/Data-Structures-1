@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Node {
 	int value;
@@ -39,6 +40,34 @@ void insertNode(Node *root, int value) {
 	    previousNode->right = newNode;
 }
 
+Node* readFromFile(char *filename) {
+	int c = 1;
+
+	Node *root = (Node*) malloc(sizeof(Node));
+	FILE *file = fopen(filename, "r");
+
+	if(file == NULL)
+		return NULL;
+
+	while(!feof(file)) {
+		int value;
+		fscanf(file, "%d", &value);
+
+		if(c) {
+			nodeConstructor(root, value);
+			c = 0;
+		}
+
+		else
+			insertNode(root, value);
+
+		if(!feof(file))
+			fscanf(file, "%*c");
+	}
+
+	return root;
+}
+
 void freeNodes(Node *node) {
 	if(node->left != NULL)
 		freeNodes(node->left);
@@ -50,8 +79,12 @@ void freeNodes(Node *node) {
 }
 
 int main(void) {
-	Node *root = (Node*) malloc(sizeof(Node));;
-	nodeConstructor(root, 3);
+	Node *root = readFromFile("bst1.txt");
+
+	if(root == NULL) {
+		root = (Node*) malloc(sizeof(Node));
+		nodeConstructor(root, 3);
+	}
 
 	printf("%d\n", root->value);
 
