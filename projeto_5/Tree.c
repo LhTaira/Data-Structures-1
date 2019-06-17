@@ -36,6 +36,31 @@ Node * rotateLeftRight(Node * grandParent) {
 	return rotateRight(grandParent);
 }
 
+Node * balanceTree(Node * node) {
+	if (node->left != NULL) {
+		balanceTree(node->left);
+	}
+	if (node->right != NULL) {
+		balanceTree(node->right);
+	}
+
+	if(getHeight(node->left) - getHeight(node->right) > 1) {
+		if(getHeight(node->left->left) > getHeight(node->left->right)) {
+			node = rotateRight(node);
+		} else {
+			node = rotateLeftRight(node);
+		}
+	} else if(getHeight(node->right) - getHeight(node->left) > 1) {
+		if(getHeight(node->right->left) > getHeight(node->right->right)) {
+			node = rotateLeft(node);
+		} else {
+			node = rotateRightLeft(node);
+		}
+	}
+
+	return node;
+} 
+
 int getHeight(Node *node) {
 	int left;
 	int right = left = 0;
