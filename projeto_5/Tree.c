@@ -12,6 +12,22 @@ void nodeConstructor(Node *node, int value) {
 	node->value = value;
 }
 
+int getHeight(Node *node) {
+	int left;
+	int right = left = 0;
+
+	if(node->left != NULL)
+		left = 1 + getHeight(node->left);
+
+	if(node->right != NULL)
+		right = 1 + getHeight(node->right);
+
+	if(left > right)
+		return left;
+
+	return right;
+};
+
 void insertNode(Node *root, int value) {
 	Node *newNode = (Node*) malloc(sizeof(Node));
 	nodeConstructor(newNode, value);
@@ -86,6 +102,7 @@ int main(void) {
 		nodeConstructor(root, 3);
 	}
 
+
 	printf("%d\n", root->value);
 
 	insertNode(root, 2);
@@ -93,6 +110,8 @@ int main(void) {
 
 	printf("%d\n", root->left->value);
 	printf("%d\n", root->right->value);
+
+	printf("%d\n", getHeight(root));
 
 	freeNodes(root);
 	return 0;
