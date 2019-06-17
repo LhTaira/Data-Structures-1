@@ -12,6 +12,30 @@ void nodeConstructor(Node *node, int value) {
 	node->value = value;
 }
 
+Node * rotateLeft(Node * grandParent) {
+	Node * temp = grandParent->right;
+	grandParent->right = temp->left;
+	temp->left = grandParent;
+	return temp;
+}
+
+Node * rotateRight(Node * grandParent) {
+	Node * temp = grandParent->left;
+	grandParent->left = temp->right;
+	temp->right = grandParent;
+	return temp;
+}
+
+Node * rotateRightLeft(Node * grandParent) {
+	grandParent->right = rotateRight(grandParent->right);
+	return rotateLeft(grandParent);
+}
+
+Node * rotateLeftRight(Node * grandParent) {
+	grandParent->left = rotateLeft(grandParent->left);
+	return rotateRight(grandParent);
+}
+
 int getHeight(Node *node) {
 	int left;
 	int right = left = 0;
