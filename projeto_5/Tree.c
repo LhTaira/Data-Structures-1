@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 typedef struct Node {
 	int value;
@@ -11,6 +12,25 @@ void nodeConstructor(Node *node, int value) {
 	node->left = node->right = NULL;
 	node->value = value;
 }
+
+int getHeight(Node *node) {
+	int left;
+	int right = left = 0;
+
+	if (node == NULL) {
+		return 0;
+	}
+	if(node->left != NULL)
+		left = 1 + getHeight(node->left);
+
+	if(node->right != NULL)
+		right = 1 + getHeight(node->right);
+
+	if(left > right)
+		return left;
+
+	return right;
+};
 
 Node * rotateLeft(Node * grandParent) {
 	Node * temp = grandParent->right;
@@ -37,13 +57,15 @@ Node * rotateLeftRight(Node * grandParent) {
 }
 
 Node * balanceTree(Node * node) {
+	if(node == NULL) {
+		return node;
+	}
 	if (node->left != NULL) {
 		balanceTree(node->left);
 	}
 	if (node->right != NULL) {
 		balanceTree(node->right);
 	}
-
 	if(getHeight(node->left) - getHeight(node->right) > 1) {
 		if(getHeight(node->left->left) > getHeight(node->left->right)) {
 			node = rotateRight(node);
@@ -59,23 +81,21 @@ Node * balanceTree(Node * node) {
 	}
 
 	return node;
-} 
+}
 
-int getHeight(Node *node) {
-	int left;
-	int right = left = 0;
+int checkBalance(Node * node) {
 
-	if(node->left != NULL)
-		left = 1 + getHeight(node->left);
+	if (node == NULL) {
+		return 1;
+	}
 
-	if(node->right != NULL)
-		right = 1 + getHeight(node->right);
+	if(abs(getHeight(node->left) - getHeight(node->right)) <=1 && checkBalance(node->left) && checkBalance(node->right)) {
+		return 1;
+	}
 
-	if(left > right)
-		return left;
+	return 0;
 
-	return right;
-};
+}
 
 void insertNode(Node *root, int value) {
 	Node *newNode = (Node*) malloc(sizeof(Node));
@@ -144,24 +164,46 @@ void freeNodes(Node *node) {
 }
 
 int main(void) {
-	Node *root = readFromFile("bst1.txt");
+	//Node *root = readFromFile("bst1.txt");
+	Node * root = malloc(sizeof(Node));
+	nodeConstructor(root, 3);
 
-	if(root == NULL) {
-		root = (Node*) malloc(sizeof(Node));
-		nodeConstructor(root, 3);
-	}
+	//if(root == NULL) {
+	//	root = (Node*) malloc(sizeof(Node));
+	//	nodeConstructor(root, 3);
+	//}
 
 
-	printf("%d\n", root->value);
+	//printf("%d\n", root->value);
 
 	insertNode(root, 2);
+	insertNode(root, 5);
 	insertNode(root, 4);
+	insertNode(root, 1);
+	insertNode(root, 6);
+	insertNode(root, 7);
+	insertNode(root, 8);
 
-	printf("%d\n", root->left->value);
-	printf("%d\n", root->right->value);
+	//printf("%d\n", root->left->value);
+	//printf("%d\n", root->right->value);
 
-	printf("%d\n", getHeight(root));
+	//printf("%d\n", getHeight(root->right));
+	//balanceTree(root);
 
+	if(checkBalance(root) == 1) {
+		printf("Arvore equilibrada\n");
+	} else {
+		printf("Arvore nao equilibrada\n");
+	} 
+
+	balanceTree(root);
+
+	if(checkBalance(root) == 1) {
+		printf("Arvore equilibrada\n");
+	} else {
+		printf("Arvore nao equilibrada\n");
+	} 
+	
 	freeNodes(root);
 	return 0;
 }
