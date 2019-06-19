@@ -31,6 +31,10 @@ int lookForLevel(Node * node, int value) {
 void printFamily(Node * node, int level, int value) {
     int thisLevel = 1;
 
+    if(level == 1) {
+        printf("Não existe não existe nó pai nem nó irmão pois valor está na raiz da árvore\n");
+    }
+
     while(thisLevel != level -1) {
         if(value < node->value) {
             thisLevel++;
@@ -40,19 +44,30 @@ void printFamily(Node * node, int level, int value) {
             node = node->right;
         }
     }
-    printf("pai: %d\n", node->value);
+    printf("Valor do nó pai: %d\n", node->value);
     if(value < node->value) {
-        printf("irmao: %d\n", node->right->value);
+        if(node->right != NULL) {
+        printf("Valor do nó irmão: %d\n", node->right->value);
+        } else {
+            printf("Não existe nó irmão\n");
+        }
     } else if(value > node->value) {
-        printf("irmao: %d\n", node->left->value);
+        if(node->left != NULL) {
+            printf("Valor do nó irmão: %d\n", node->left->value);
+        } else {
+            printf("Não existe nó irmão\n");
+        }
     }
 }
 int searchValue(Node * node, int value) {
     int level;
     if(contains(node, value) == 1) {
+        printf("Valor encontrado\n");
         level = lookForLevel(node, value);
-        printf("nivel: %d\n", level);
+        printf("Nível: %d\n", level);
         printFamily(node, level, value);
+    } else {
+        printf("Valor não está presente na árvore\n");
     }
    
 }
