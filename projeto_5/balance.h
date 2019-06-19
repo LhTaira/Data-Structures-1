@@ -1,5 +1,5 @@
 #include <math.h>
-#include "Tree.h"
+#include "print.h"
 
 int getHeight(Node *node) {
 	int left;
