@@ -1,13 +1,15 @@
-#include "balance.h"
+#include "search.h"
 
 int main() {
 	Node * root = NULL;
 	
 	int run = 1;
 	int userOption;
+	int value;
 	char fileName[100];
 	
 	while(run == 1) {
+		printf("Menu:\n");
 		printf("Digite o número de sua opção para realizar a ação\n");
 		printf("Número - ação\n");
 		printf("1 - Carregar árvore de um arquivo\n");
@@ -16,6 +18,8 @@ int main() {
 		printf("4 - Imprimir árvore em pós ordem\n");
 		printf("5 - Checar equilíbrio da árvore\n");
 		printf("6 - Equilibrar árvore\n");
+		printf("7 - Inserir valor na árvore\n");
+		printf("8 - Procurar valor na árvore\n");
 		printf("0 - Encerrar execução\n");
 		scanf("%d", &userOption);
 
@@ -61,6 +65,22 @@ int main() {
 			case 6:
 				printf("\n\n\nEquilibrar árvore\n\n\n");
 				root = balanceTree(root);
+				break;
+			case 7:
+				printf("\n\n\nInserir valor na árvore\n\n\nDigite um número inteiro que deseja inserir na árvore\n");
+				scanf("%d", &value);
+				if(root == NULL) {
+					root = (Node *) malloc(sizeof(Node));
+					nodeConstructor(root, value);
+				} else {
+				insertNode(root, value);
+				}
+				printf("\n\n\nValor inserido\n\n\n");
+				break;
+			case 8:
+				printf("\n\n\nProcurar valor na árvore\n\n\nDigite o valor que deseja procurar na árvore\n");
+				scanf("%d", &value);
+				searchValue(root, value);
 				break;
 			case 0:
 				printf("\n\n\nEncerrar execução\n\n\n");
