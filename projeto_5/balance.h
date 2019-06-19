@@ -62,17 +62,17 @@ Node * balanceTree(Node * node) {
 	}
 
 	if (checkBalance(node->left) != 1) {
-		node = balanceTree(node->left);
+		node->left = balanceTree(node->left);
 	}
 	if (checkBalance(node->right) != 1) {
-		node = balanceTree(node->right);
+		node->right  = balanceTree(node->right);
 	}
 	if(checkBalance(node) != 1) {
 		if(getHeight(node->left) - getHeight(node->right) > 1) {
 			if(getHeight(node->left->left) > getHeight(node->left->right)) {
-				node = rotateLeftRight(node);
-			} else {
 				node = rotateRight(node);
+			} else {
+				node = rotateLeftRight(node);
 			}
 		} else if(getHeight(node->right) - getHeight(node->left) > 1) {
 			if(getHeight(node->right->left) > getHeight(node->right->right)) {
@@ -82,6 +82,10 @@ Node * balanceTree(Node * node) {
 			}
 		}
 	}
+
+	//if(checkBalance(node) != 1) {
+		//balanceTree(node);
+	//}
 
 	return node;
 }
