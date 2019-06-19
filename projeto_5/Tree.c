@@ -20,11 +20,9 @@ int getHeight(Node *node) {
 	if (node == NULL) {
 		return 0;
 	}
-	if(node->left != NULL)
-		left = 1 + getHeight(node->left);
 
-	if(node->right != NULL)
-		right = 1 + getHeight(node->right);
+	left = 1 + getHeight(node->left);
+	right = 1 + getHeight(node->right);
 
 	if(left > right)
 		return left;
@@ -56,46 +54,50 @@ Node * rotateLeftRight(Node * grandParent) {
 	return rotateRight(grandParent);
 }
 
-Node * balanceTree(Node * node) {
-	if(node == NULL) {
-		return node;
-	}
-	if (node->left != NULL) {
-		balanceTree(node->left);
-	}
-	if (node->right != NULL) {
-		balanceTree(node->right);
-	}
-	if(getHeight(node->left) - getHeight(node->right) > 1) {
-		if(getHeight(node->left->left) > getHeight(node->left->right)) {
-			node = rotateRight(node);
-		} else {
-			node = rotateLeftRight(node);
-		}
-	} else if(getHeight(node->right) - getHeight(node->left) > 1) {
-		if(getHeight(node->right->left) > getHeight(node->right->right)) {
-			node = rotateLeft(node);
-		} else {
-			node = rotateRightLeft(node);
-		}
-	}
-
-	return node;
-}
-
 int checkBalance(Node * node) {
 
 	if (node == NULL) {
 		return 1;
 	}
 
-	if(abs(getHeight(node->left) - getHeight(node->right)) <=1 && checkBalance(node->left) && checkBalance(node->right)) {
+	if(abs(getHeight(node->left) - getHeight(node->right)) <=1 && checkBalance(node->left)  == 1 && checkBalance(node->right) == 1) {
 		return 1;
 	}
 
 	return 0;
 
 }
+
+Node * balanceTree(Node * node) {
+	if(node == NULL) {
+		return node;
+	}
+
+	if (checkBalance(node->left) != 1) {
+		node = balanceTree(node->left);
+	}
+	if (checkBalance(node->right) != 1) {
+		node = balanceTree(node->right);
+	}
+	if(checkBalance(node) != 1) {
+		if(getHeight(node->left) - getHeight(node->right) > 1) {
+			if(getHeight(node->left->left) > getHeight(node->left->right)) {
+				node = rotateLeftRight(node);
+			} else {
+				node = rotateRight(node);
+			}
+		} else if(getHeight(node->right) - getHeight(node->left) > 1) {
+			if(getHeight(node->right->left) > getHeight(node->right->right)) {
+				node = rotateRightLeft(node);
+			} else {
+				node = rotateLeft(node);
+			}
+		}
+	}
+
+	return node;
+}
+
 
 void insertNode(Node *root, int value) {
 	Node *newNode = (Node*) malloc(sizeof(Node));
@@ -166,7 +168,7 @@ void freeNodes(Node *node) {
 int main(void) {
 	//Node *root = readFromFile("bst1.txt");
 	Node * root = malloc(sizeof(Node));
-	nodeConstructor(root, 3);
+	nodeConstructor(root, 1);
 
 	//if(root == NULL) {
 	//	root = (Node*) malloc(sizeof(Node));
@@ -177,12 +179,12 @@ int main(void) {
 	//printf("%d\n", root->value);
 
 	insertNode(root, 2);
-	insertNode(root, 5);
 	insertNode(root, 4);
-	insertNode(root, 1);
+	insertNode(root, 5);
+	//insertNode(root, 1);
 	insertNode(root, 6);
-	insertNode(root, 7);
 	insertNode(root, 8);
+	//insertNode(root, 7);
 
 	//printf("%d\n", root->left->value);
 	//printf("%d\n", root->right->value);
@@ -190,20 +192,21 @@ int main(void) {
 	//printf("%d\n", getHeight(root->right));
 	//balanceTree(root);
 
+	root = balanceTree(root);
 	if(checkBalance(root) == 1) {
 		printf("Arvore equilibrada\n");
 	} else {
 		printf("Arvore nao equilibrada\n");
 	} 
 
-	balanceTree(root);
-
+	//root = balanceTree(root);
+	/*
 	if(checkBalance(root) == 1) {
 		printf("Arvore equilibrada\n");
 	} else {
 		printf("Arvore nao equilibrada\n");
 	} 
-	
+	*/
 	freeNodes(root);
 	return 0;
 }
