@@ -28,19 +28,27 @@ int main() {
 
 		switch(userOption) {
 			case 1:
-				printf("\n\n\nCarregar árvore de um arquivo\n\n\nDigite o nome do arquivo que deseja carregar\n");
+				printf("\n\n\nCarregar árvore de um arquivo\n\n\nDigite o nome do arquivo que deseja carregar - Exemplo: bst1.txt\n");
 				scanf("%s", fileName);
+
+				printf("\n");
 
 				if(root != NULL) {
 					freeNodes(root);
 				}
 
 				root = readFromFile(fileName);
-				printf("\n\n\n");
+
+				if (root == NULL) {
+					printf("Arquivo não encontrado, certifique-se que ele se encontra na pasta raiz do projeto.");
+				} else {
+					printf("Arquivo carregado\n");
+				}
+				printf("\n\n");
 				break;
 			case 2:
 				printf("\n\n\nImprimir árvore em ordem\n\n\n");
-				printInOrder(root);\
+				printInOrder(root);
 				printf("\n\n\n");
 				break;
 			case 3:
@@ -109,6 +117,8 @@ int main() {
 				break;
 		}
 	}
-	freeNodes(root);
+	if(root != NULL) {
+		freeNodes(root);
+	}
 	return 0;
 }
