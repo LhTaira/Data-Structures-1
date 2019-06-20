@@ -1,6 +1,9 @@
 #include "remove.h"
 #include "showTree.h"
 
+//Luis Henrique Pereira Taira - 17/0109208
+//Samuel de Souza Buters Pereira - 17/0114040
+
 int main() {
 	Node * root = NULL;
 

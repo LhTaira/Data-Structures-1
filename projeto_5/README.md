@@ -16,3 +16,5 @@ na pasta raiz do projeto,
 
 Para rodar o programa rode
 ```./main```
+
+Maximize o terminal durante a execução para uma melhor exibição das árvores.
