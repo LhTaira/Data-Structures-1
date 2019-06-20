@@ -1,4 +1,4 @@
-#include "full.h"
+#include "remove.h"
 
 int main() {
 	Node * root = NULL;
@@ -12,16 +12,17 @@ int main() {
 		printf("Menu:\n");
 		printf("Digite o número de sua opção para realizar a ação\n");
 		printf("Número - ação\n");
-		printf("1 - Carregar árvore de um arquivo\n");
-		printf("2 - Imprimir árvore em ordem\n");
-		printf("3 - Imprimir árvore em pré ordem\n");
-		printf("4 - Imprimir árvore em pós ordem\n");
+		printf("1 - Carregar árvore de um arquivo (loadTreeFromFile)\n");
+		printf("2 - Imprimir árvore em ordem (printInOrder)\n");
+		printf("3 - Imprimir árvore em pré ordem(printPreOrder)\n");
+		printf("4 - Imprimir árvore em pós ordem (printPostOrder)\n");
 		printf("5 - Checar equilíbrio da árvore\n");
-		printf("6 - Equilibrar árvore\n");
+		printf("6 - Equilibrar árvore (balenceTree)\n");
 		printf("7 - Inserir valor na árvore\n");
-		printf("8 - Procurar valor na árvore\n");
-		printf("9 - Imprimir tamanho da árvore\n");
-		printf("10 - Verificar se a árvore está cheia\n");
+		printf("8 - Procurar valor na árvore (searchValue)\n");
+		printf("9 - Imprimir tamanho da árvore (getHeight)\n");
+		printf("10 - Verificar se a árvore está cheia (isFull)\n");
+		printf("11 - Remover valor da árvore (removeValue)\n");
 		printf("0 - Encerrar execução\n");
 		scanf("%d", &userOption);
 
@@ -94,6 +95,13 @@ int main() {
 			case 10:
 				printf("\n\n\nVerificar se a árvore está cheia\n\n\n");
 				isFull(root);
+				break;
+			case 11:
+				printf("\n\n\nRemover valor da árvore\n\n\nDigite um número inteiro que deseja remover da árvore\n");
+				scanf("%d", &value);
+				printf("\n\n\n");
+				removeValue(root, value);
+				printf("\n\n\n");
 				break;
 			case 0:
 				printf("\n\n\nEncerrar execução\n\n\n");
