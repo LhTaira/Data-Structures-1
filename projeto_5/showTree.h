@@ -1,7 +1,6 @@
 int i = 0;
 int j = 48;
 int level = 2;
-int side;
 
 int getLeftWidth(Node *node, int width) {
 	if(node == NULL)
@@ -115,6 +114,10 @@ void drawMatrix(Node *node, int* treeMatrix) {
 }
 
 void showTree(Node *root) {
+	i = 0;
+	j = 48;
+	level = 2;
+
 	if(root == NULL)
 		return;
 
