@@ -1,13 +1,14 @@
 #include "remove.h"
+#include "showTree.h"
 
 int main() {
 	Node * root = NULL;
-	
+
 	int run = 1;
 	int userOption;
 	int value;
 	char fileName[100];
-	
+
 	while(run == 1) {
 		printf("Menu:\n");
 		printf("Digite o número de sua opção para realizar a ação\n");
@@ -23,6 +24,7 @@ int main() {
 		printf("9 - Imprimir tamanho da árvore (getHeight)\n");
 		printf("10 - Verificar se a árvore está cheia (isFull)\n");
 		printf("11 - Remover valor da árvore (removeValue)\n");
+		printf("12 - Imprimir árvore (showTree)\n");
 		printf("0 - Encerrar execução\n");
 		scanf("%d", &userOption);
 
@@ -110,6 +112,11 @@ int main() {
 				printf("\n\n\n");
 				removeValue(root, value);
 				printf("\n\n\n");
+				break;
+
+			case 12:
+				printf("\n\n\nImprimir árvore\n\n\n");
+				showTree(root);
 				break;
 			case 0:
 				printf("\n\n\nEncerrar execução\n\n\n");
