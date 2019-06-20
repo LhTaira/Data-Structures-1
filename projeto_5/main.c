@@ -1,4 +1,4 @@
-#include "search.h"
+#include "full.h"
 
 int main() {
 	Node * root = NULL;
@@ -21,6 +21,7 @@ int main() {
 		printf("7 - Inserir valor na árvore\n");
 		printf("8 - Procurar valor na árvore\n");
 		printf("9 - Imprimir tamanho da árvore\n");
+		printf("10 - Verificar se a árvore está cheia\n");
 		printf("0 - Encerrar execução\n");
 		scanf("%d", &userOption);
 
@@ -89,6 +90,10 @@ int main() {
 				printf("\n\n\nImprimir tamanho da árvore\n\n\n");
 				getHeight(root);
 				printf("\n\n\n");
+				break;
+			case 10:
+				printf("\n\n\nVerificar se a árvore está cheia\n\n\n");
+				isFull(root);
 				break;
 			case 0:
 				printf("\n\n\nEncerrar execução\n\n\n");
