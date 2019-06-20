@@ -133,7 +133,7 @@ void showTree(Node *root) {
 
 	for(; x0 < size/85;x0++)
 		for(int c = 0; c < 85; c++)
-			if(*(treeMatrix + c * 85 + x0) != -77)
+			if(*(treeMatrix + x0 * 85 + c) != -77)
 				goto x1Label;
 
 	x1Label:
@@ -163,8 +163,20 @@ void showTree(Node *root) {
 				printf("/");
 			else if(*(treeMatrix + c * 85 + k) == -9)
 				printf("\\");
-			else
+			else {
 				printf("%d", *(treeMatrix + c * 85 + k));
+
+				if(*(treeMatrix + c * 85 + k) > 99) {
+					if(*(treeMatrix + c * 85 + k + 1) == -77)
+						if(*(treeMatrix + c * 85 + k + 2) == -77)
+							k = k + 2;
+				}
+
+				else if(*(treeMatrix + c * 85 + k) > 9) {
+					if(*(treeMatrix + c * 85 + k + 1) = -77)
+						k++;
+				}
+			}
 		}
 
 		printf("\n");
