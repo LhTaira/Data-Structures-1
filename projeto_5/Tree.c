@@ -223,11 +223,50 @@ void freeNodes(Node *node) {
 	return adversaryWidth;
 }*/
 
+int getLeftWidth(Node *node, int width) {
+	if(node == NULL)
+		return -1;
+
+	int leftWidth, rightWidth;
+	leftWidth = rightWidth = width;
+
+	if(node->left != NULL)
+		leftWidth = getLeftWidth(node->left, width+1);
+
+	if(node->right != NULL)
+		rightWidth = getLeftWidth(node->right, width-1);
+
+	if(leftWidth > rightWidth)
+		return leftWidth;
+
+	return rightWidth;
+}
+
+int getRightWidth(Node *node, int width) {
+	if(node == NULL)
+		return -1;
+
+	int leftWidth, rightWidth;
+	leftWidth = rightWidth = width;
+
+	if(node->right != NULL)
+		leftWidth = getLeftWidth(node->left, width+1);
+
+	if(node->left != NULL)
+		rightWidth = getLeftWidth(node->right, width-1);
+
+	if(leftWidth > rightWidth)
+		return leftWidth;
+
+	return rightWidth;
+}
+
 void drawMatrix(Node *node, int* treeMatrix) {
 	int c = 0;
 	int currentLevel = level;
 	int myJ = j;
 	int myI = i;
+	const int middle = 48;
 
 	/*if(*(treeMatrix+i*85+j) != -77) {
 		if(*(treeMatrix+i*85+j) > absoluteNode->value)
@@ -247,11 +286,19 @@ void drawMatrix(Node *node, int* treeMatrix) {
 	i++;
 	j--;
 	if(node->left != NULL) {
-		level = getHeight(node->left);
+		level = 0;
+
+		if(myJ == middle)
+			level = 8;
+
+		else
+			if((j - level + getRightWidth(node->left, 1) > middle) || *(treeMatrix+(i+level+1)*85+(j-level+1)) != -77)
+				level++;
+
 		for(;level > 0;level--) {
 			c = 0;
 
-			for(; c < 2; i++, j--, c++)
+			for(; c < 1; i++, j--, c++)
 				*(treeMatrix+i*85+j) = -7;
 		}
 
@@ -297,11 +344,19 @@ void drawMatrix(Node *node, int* treeMatrix) {
 	i++;
 	j++;
 	if(node->right != NULL) {
-		level = getHeight(node->right);
+		level = 0;
+
+		if(myJ == middle)
+			level = 8;
+
+		else
+			if((j + level - getLeftWidth(node->right, 1) < middle) || *(treeMatrix+(i+level+1)*85+(j+level+1)) != -77)
+				level++;
+
 		for(;level > 0;level--) {
 			c = 0;
 
-			for(; c < 2; i++, j++, c++)
+			for(; c < 1; i++, j++, c++)
 				*(treeMatrix+i*85+j) = -9;
 		}
 
@@ -413,7 +468,7 @@ void showTree(Node *root) {
 }
 
 int main(void) {
-	Node *root = readFromFile("bst4.txt");
+	Node *root = readFromFile("bst7.txt");
 
 	if(root == NULL) {
 		root = (Node*) malloc(sizeof(Node));
@@ -423,12 +478,8 @@ int main(void) {
 
 	printf("%d\n", root->value);
 
-	insertNode(root, 2);
-	insertNode(root, 3);
-	insertNode(root, 8);
-
-	printf("%d\n", root->left->value);
-	printf("%d\n", root->right->value);
+	//printf("%d\n", root->left->value);
+	//printf("%d\n", root->right->value);
 
 	printf("%d\n", getHeight(root));
 
