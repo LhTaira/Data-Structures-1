@@ -30,7 +30,11 @@ int main(int argc) {
 	double * featureVectorAsphaltTest;
 	double * featureVectorGrassTestSoma;
 	double * featureVectorAsphaltTestSoma;
+	double * hiddenLayerOutput;
+	double * output;
 
+
+	double inputLayerOutput[536];
 	double grassDist;
 	double asphaltDist;
 	
@@ -68,19 +72,17 @@ int main(int argc) {
 	featureVectorGrassTestSoma = (double*) calloc(512+24, sizeof(double));
 	featureVectorAsphaltTestSoma = (double*) calloc(512+24, sizeof(double));
 	
-	
+	hiddenLayerOutput = (double *) malloc(argc * sizeof(double));
 
 	randomizeVector(randVecTrain, randvecTest);
 
 	FILE *grassFile;	
 	FILE *asphaltFile;
 
-	randomizeThings(inputNeuronLayer);
+	randomizeThings(inputNeuronLayer, 536);
+	randomizeThings(hiddenNeuronLayer, argc);
+	randomizeOneThing(outputNeuronLayer, argc);
 
-	for(int j=0; j<536; j++) {
-		printf("%d\n", inputNeuronLayer->element.w[j]);
-	}
-	/* 
 	for (short int i=0; i<iteracoes; i++) {
 		printf("Treinamento: %d\%%\n", i*4);
 		getFileName(asphaltName, grassName, randVecTrain[i]);
@@ -115,9 +117,13 @@ int main(int argc) {
      
 		normalizeFeatureVector(featureVectorGrassTrain);
 		
-		// for(int j=0; j<536; j++) {
-		// 	featureVectorGrassTrainSoma[j]+=featureVectorGrassTrain[j];
-		// }
+		inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorGrassTrain, 536);
+		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
+		
+		//  for(int j=0; j<536; j++) {
+		//  	featureVectorGrassTrainSoma[j]+=featureVectorGrassTrain[j];
+		//  }
 
 		free(ilbp);
         
@@ -140,7 +146,7 @@ int main(int argc) {
 
 		appendGlcm(featureVectorAsphaltTrain, contrastAsphalt, energyAsphalt, homogeneityAsphalt);
 
-		normalizeFeatureVector(featureVectorAsphaultTrain);
+		normalizeFeatureVector(featureVectorAsphaltTrain);
 		
 		// for(int j=0; j<536; j++) {
 		// 	featureVectorAsphaltTrainSoma[j]+=featureVectorAsphaltTrain[j];
@@ -257,6 +263,6 @@ int main(int argc) {
 	printf("Taxa de Acerto: %d%%\nTaxa de Falsa Aceitação: %d%%\nTaxa de Falsa Rejeição: %d%%\n", taxaDeAcerto*2, taxaDeFalsaAceitacao*2, taxaDeFalsaRejeicao*2);
 
 
-	*/
+	
 	return 0;
 }

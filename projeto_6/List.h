@@ -3,7 +3,7 @@
 
 typedef struct Element {
 	struct Element * forwardNeurons;
-	int w[536];
+	int * w;
 	int b;
 	int output;
 } Element;
