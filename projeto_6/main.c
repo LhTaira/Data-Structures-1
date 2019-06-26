@@ -30,13 +30,14 @@ int main(int argc) {
 	double * featureVectorAsphaltTest;
 	double * featureVectorGrassTestSoma;
 	double * featureVectorAsphaltTestSoma;
+	double * inputLayerOutput;
 	double * hiddenLayerOutput;
 	double * output;
 
 
-	double inputLayerOutput[536];
 	double grassDist;
 	double asphaltDist;
+	double featureMatrixGrassTrain[25][536];
 	
 	int i=0;
 	int taxaDeAcerto=0;
@@ -72,7 +73,9 @@ int main(int argc) {
 	featureVectorGrassTestSoma = (double*) calloc(512+24, sizeof(double));
 	featureVectorAsphaltTestSoma = (double*) calloc(512+24, sizeof(double));
 	
+	inputLayerOutput = (double *) malloc(536 * sizeof(double));
 	hiddenLayerOutput = (double *) malloc(argc * sizeof(double));
+	output = (double *) malloc(sizeof(double));
 
 	randomizeVector(randVecTrain, randvecTest);
 
@@ -121,9 +124,10 @@ int main(int argc) {
 		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
 		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 		
-		//  for(int j=0; j<536; j++) {
-		//  	featureVectorGrassTrainSoma[j]+=featureVectorGrassTrain[j];
-		//  }
+		 for(int j=0; j<536; j++) {
+		 	featureMatrixGrassTrain[i][j]+=featureVectorGrassTrain[j];
+		 	
+		 }
 
 		free(ilbp);
         

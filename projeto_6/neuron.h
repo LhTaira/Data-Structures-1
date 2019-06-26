@@ -1,5 +1,22 @@
-#include "List.h"
 #include <time.h>
+#include <math.h>
+#include "List.h"
+
+
+#define E 2.7182818284590452353602874713527
+
+double logistic(double x) {
+    
+    if(x >= 8) {
+        return 1.0;
+    } else if(x <= 0) {
+        return 0.0;
+    }
+
+    return 1/(1+ pow(E, -x));
+
+}
+
 
 void randomizeThings(List * layer, int number) {
     
@@ -48,12 +65,17 @@ void randomizeOneThing(List * layer, int number) {
 double * getLayerOutput(List * layer, int layerSize, double * inputVector, int inputVectorSize) {
     
     double * outputVector = (double *) malloc(layerSize*sizeof(double));
+    double aux;
 
     for(int i=0; i < layerSize; i++) {
         for(int j=0; j < inputVectorSize; j++) {
-            aux;
+            aux += inputVector[j] * layer->element.w[j];
         }
+
+        aux += layer->element.b;
+        aux = logistic(aux);
         outputVector[i] = aux;
+        aux = 0;
         layer = layer->nextElement;
     }
 
