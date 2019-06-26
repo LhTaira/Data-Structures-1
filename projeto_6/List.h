@@ -2,8 +2,10 @@
 #include <stdlib.h>
 
 typedef struct Element {
-	int x;
-	char a;
+	struct Element * forwardNeurons;
+	int w[536];
+	int b;
+	int output;
 } Element;
 
 typedef struct List {
@@ -14,8 +16,10 @@ typedef struct List {
 Element setNullElement() {
 	Element nullElement;
 
-	nullElement.x = 0;
-	nullElement.a = '\n';
+	// nullElement.w = {0};
+	nullElement.b = 0;
+	nullElement.output = -1;
+	nullElement.forwardNeurons = NULL;
 }
 
 List* getList(List *list, int index) {
@@ -43,6 +47,10 @@ List* getLastList(List *list) {
 
 int getListSize(List *list) {
 	int size = 1;
+
+	// if(list->element.w == NULL) {
+	// 	return 0;
+	// }
 
 	while(list->nextElement != NULL) {
 		list = list->nextElement;

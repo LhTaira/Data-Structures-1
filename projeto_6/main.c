@@ -10,9 +10,17 @@ Samuel de Souza Buters Pereira	17/0114040
 #include "ilbp.h"
 #include "glcm.h"
 #include "feature.h"
+#include "neuron.h"
 
-int main() {
+int main(int argc) {
+	
+	List * inputNeuronLayer;
+	List * hiddenNeuronLayer;
+	List * outputNeuronLayer;
+	List * neuron;
+
 	int * ilbp;
+
 	double * featureVectorGrassTrain;
 	double * featureVectorAsphaltTrain;
 	double * featureVectorGrassTrainSoma;
@@ -45,6 +53,11 @@ int main() {
 	char asphaltName[34] = "./DataSet/asphalt/asphalt_xx.txt\0";
 	char grassName[29] = "./DataSet/grass/grass_xx.txt\0";
 
+	inputNeuronLayer = (List *) malloc(sizeof(List));
+	hiddenNeuronLayer = (List *) malloc(sizeof(List));
+	outputNeuronLayer = (List *) malloc(sizeof(List));
+	neuron = (List *) malloc(sizeof(List));
+
 	featureVectorGrassTrain = (double*) malloc((512+24) * sizeof(double));
 	featureVectorAsphaltTrain = (double*) malloc((512+24) * sizeof(double));
 	featureVectorGrassTrainSoma = (double*) calloc(512+24, sizeof(double));
@@ -62,6 +75,12 @@ int main() {
 	FILE *grassFile;	
 	FILE *asphaltFile;
 
+	randomizeThings(inputNeuronLayer);
+
+	for(int j=0; j<536; j++) {
+		printf("%d\n", inputNeuronLayer->element.w[j]);
+	}
+	/* 
 	for (short int i=0; i<iteracoes; i++) {
 		printf("Treinamento: %d\%%\n", i*4);
 		getFileName(asphaltName, grassName, randVecTrain[i]);
@@ -96,9 +115,9 @@ int main() {
      
 		normalizeFeatureVector(featureVectorGrassTrain);
 		
-		for(int j=0; j<536; j++) {
-			featureVectorGrassTrainSoma[j]+=featureVectorGrassTrain[j];
-		}
+		// for(int j=0; j<536; j++) {
+		// 	featureVectorGrassTrainSoma[j]+=featureVectorGrassTrain[j];
+		// }
 
 		free(ilbp);
         
@@ -121,11 +140,11 @@ int main() {
 
 		appendGlcm(featureVectorAsphaltTrain, contrastAsphalt, energyAsphalt, homogeneityAsphalt);
 
-		normalizeFeatureVector(featureVectorGrassTrain);
+		normalizeFeatureVector(featureVectorAsphaultTrain);
 		
-		for(int j=0; j<536; j++) {
-			featureVectorAsphaltTrainSoma[j]+=featureVectorAsphaltTrain[j];
-		}
+		// for(int j=0; j<536; j++) {
+		// 	featureVectorAsphaltTrainSoma[j]+=featureVectorAsphaltTrain[j];
+		// }
 
 		free(ilbp);
 
@@ -238,6 +257,6 @@ int main() {
 	printf("Taxa de Acerto: %d%%\nTaxa de Falsa Aceitação: %d%%\nTaxa de Falsa Rejeição: %d%%\n", taxaDeAcerto*2, taxaDeFalsaAceitacao*2, taxaDeFalsaRejeicao*2);
 
 
-
+	*/
 	return 0;
 }
