@@ -7,13 +7,14 @@
 
 double logistic(double x) {
     
-    if(x >= 8) {
-        return 1.0;
-    } else if(x <= -8) {
-        return 0.0;
-    }
-
-    return 1/(1+ pow(E, -x));
+    // if(x >= 8) {
+    //     return 1.0;
+    // } else if(x <= -8) {
+    //     return 0.0;
+    // }
+    double l = 1.0 / (1.0 + pow(E, -x));
+    // printf("logistica ============= %lf\n", l);
+    return l;
 
 }
 
@@ -31,9 +32,10 @@ void randomizeThings(List * layer, int number) {
     for(int i = 0; i < number; i++) {
 
         for(int j =0; j < 536; j++) {
-            element.w[j] = (rand() % 1500) + 1;
+            element.w[j] = (rand() % 4) + 1;
         }
-        element.b = (rand() % 1500) + 1;
+        // element.b = (rand() % 4) + 1;
+        element.b = 1;
         
         if(i == 0) {
             listConstructor(layer, element);
@@ -55,9 +57,10 @@ void randomizeOneThing(List * layer, int number) {
     srand(time(NULL));
 
     for(int i=0; i < number; i++) {
-        element.w[i] = (rand() % 1500) + 1;
+        element.w[i] = (rand() % 4) + 1;
     }
-    element.b = (rand() % 1500) + 1;
+    // element.b = (rand() % 4) + 1;
+    element.b = 1;
 
     listConstructor(layer, element);
 }

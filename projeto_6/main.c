@@ -39,7 +39,10 @@ int main(int argc) {
 	double grassDist;
 	double asphaltDist;
 	double featureMatrixGrassTrain[25][536];
-	double featureMatrixAsphaultTrain[25][536];
+	double featureMatrixAsphaltTrain[25][536];
+	double errorSum = 0;
+	double meanSquareError;
+	double examples = 1.0;
 	
 	int i=0;
 	int taxaDeAcerto=0;
@@ -89,7 +92,7 @@ int main(int argc) {
 	randomizeOneThing(outputNeuronLayer, argc);
 
 	for (short int i=0; i<iteracoes; i++) {
-		printf("Treinamento: %d\%%\n", i*4);
+		printf("Leitura de imagens: %d\%%\n", i*4);
 		getFileName(asphaltName, grassName, randVecTrain[i]);
 		
 		double contrastGrass[8] = { 0 };
@@ -151,7 +154,7 @@ int main(int argc) {
 		normalizeFeatureVector(featureVectorAsphaltTrain);
 		
 		for(int j=0; j<536; j++) {
-			featureMatrixAsplaultTrain[i][j] = featureVectorAsphaultTrain[j];
+			featureMatrixAsphaltTrain[i][j] = featureVectorAsphaltTrain[j];
 		}
 
 		free(ilbp);
@@ -164,7 +167,7 @@ int main(int argc) {
 		fclose(grassFile);
     	fclose(asphaltFile);
 	}
-	printf("Treinamento: 100%%\n");
+	printf("Leitura de imagens: 100%%\n");
 
 	// for(int j=0; j<536; j++) {
 	// 	featureVectorGrassTrainSoma[j]=featureVectorGrassTrainSoma[j]/25.0;
@@ -172,20 +175,44 @@ int main(int argc) {
 	// }
 
 	for(int i = 0; i < 1000; i++) {
-
+		
 		for(int j = 0; j < 25; j++) {
+			printf("Epoca %d: %i%%\n", i+1, (j+1)*4);
+			
 			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixGrassTrain[j], 536);
 			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
+			printf("esperado: 1, output: %lf\n", output);
+			errorSum += pow(1.0 - *output, 2);
+			meanSquareError = errorSum/(examples++);
+
+			if(meanSquareError <= 0.2 && j > 2) {
+				break;
+			}
+
 			propagate(1, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, inputLayerOutput);
 
-			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaultTrain[j], 536);
+			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaltTrain[j], 536);
 			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
+			
+			printf("esperado: 0, output: %lf\n", output);
+			errorSum += pow(0.0 - *output, 2);
+			meanSquareError = errorSum/(examples++);
+
+			if(meanSquareError <= 0.2 && j > 2) {
+				break;
+			}
 
 			propagate(0, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, inputLayerOutput);
+
+			printf("MSE: %lf\n", meanSquareError);
 		}
+
+		if(meanSquareError <= 0.2) {
+				break;
+			}
 	}
 
 
@@ -223,16 +250,15 @@ int main(int argc) {
 		appendGlcm(featureVectorGrassTrain, contrastGrass, energyGrass, homogeneityGrass);
      
 		normalizeFeatureVector(featureVectorGrassTest);
-		
-		grassDist = calcEuclidianDistance(featureVectorGrassTest, featureVectorGrassTrain);
-		asphaltDist = calcEuclidianDistance(featureVectorGrassTest, featureVectorAsphaltTrain);
 
+		inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorGrassTest, 536);
+		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
-		if(grassDist<asphaltDist) {
-			taxaDeAcerto++;
-		}else if(grassDist==asphaltDist){
-		} else {
+		if((*output) <= 0.5) {
 			taxaDeFalsaRejeicao++;
+		} else {
+			taxaDeAcerto++;
 		}
 
 		free(ilbp);
@@ -256,17 +282,18 @@ int main(int argc) {
 
 		appendGlcm(featureVectorAsphaltTest, contrastAsphalt, energyAsphalt, homogeneityAsphalt);
 
-		normalizeFeatureVector(featureVectorGrassTest);
-		
-		grassDist = calcEuclidianDistance(featureVectorAsphaltTest, featureVectorGrassTrain);
-		asphaltDist = calcEuclidianDistance(featureVectorAsphaltTest, featureVectorAsphaltTrain);
+		normalizeFeatureVector(featureVectorAsphaltTest);
 
-		if(grassDist>asphaltDist) {
-			taxaDeAcerto++;
-		}else if(grassDist==asphaltDist){
-		} else {
+		inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorAsphaltTest, 536);
+		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
+
+		if( (*output) <= 0.5) {
 			taxaDeFalsaAceitacao++;
+		} else {
+			taxaDeAcerto++;
 		}
+		
 		
 		free(ilbp);
 
