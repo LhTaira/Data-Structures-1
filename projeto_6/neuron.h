@@ -24,18 +24,18 @@ void randomizeThings(List * layer, int number) {
     List * auxList = (List *) malloc(sizeof(List));
     Element element;
 
-    auxList->element.w = (int *) malloc(536*sizeof(int));
-    element.w = (int *) malloc(536*sizeof(int));
+    auxList->element.w = (double *) malloc(536*sizeof(double));
+    element.w = (double *) malloc(536*sizeof(double));
 
     srand(time(NULL));
 
     for(int i = 0; i < number; i++) {
 
         for(int j =0; j < 536; j++) {
-            element.w[j] = (rand() % 4) + 1;
+            element.w[j] = (rand() % 10) + 1;
         }
-        // element.b = (rand() % 4) + 1;
-        element.b = 1;
+        element.b = -(rand() % 10) + 1;
+        // element.b = 1;
         
         if(i == 0) {
             listConstructor(layer, element);
@@ -44,7 +44,7 @@ void randomizeThings(List * layer, int number) {
             auxList->nextElement = NULL;
             listPush(layer, auxList);
             auxList = (List *) malloc(sizeof(List));
-            auxList->element.w = (int *) malloc(536*sizeof(int));
+            auxList->element.w = (double *) malloc(536*sizeof(double));
         }
     }
 }
@@ -52,15 +52,15 @@ void randomizeThings(List * layer, int number) {
 void randomizeOneThing(List * layer, int number) {
     
     Element element;
-    element.w = (int *) malloc(number*sizeof(int));
+    element.w = (double *) malloc(number*sizeof(double));
     
     srand(time(NULL));
 
     for(int i=0; i < number; i++) {
-        element.w[i] = (rand() % 4) + 1;
+        element.w[i] = (rand() % 10) + 1;
     }
-    // element.b = (rand() % 4) + 1;
-    element.b = 1;
+    element.b = -(rand() % 10) + 1;
+    // element.b = 1;
 
     listConstructor(layer, element);
 }

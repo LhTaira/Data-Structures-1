@@ -183,7 +183,7 @@ int main(int argc) {
 			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
-			printf("esperado: 1, output: %lf\n", output);
+			// printf("esperado: 1, output: %.14lf\n", output);
 			errorSum += pow(1.0 - *output, 2);
 			meanSquareError = errorSum/(examples++);
 
@@ -192,12 +192,14 @@ int main(int argc) {
 			}
 
 			propagate(1, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, inputLayerOutput);
+			
+			printf("MSE: %lf\n", meanSquareError);
 
 			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaltTrain[j], 536);
 			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 			
-			printf("esperado: 0, output: %lf\n", output);
+			// printf("esperado: 0, output: %.14lf\n", output);
 			errorSum += pow(0.0 - *output, 2);
 			meanSquareError = errorSum/(examples++);
 
@@ -289,9 +291,9 @@ int main(int argc) {
 		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
 		if( (*output) <= 0.5) {
-			taxaDeFalsaAceitacao++;
-		} else {
 			taxaDeAcerto++;
+		} else {
+			taxaDeFalsaAceitacao++;
 		}
 		
 		
