@@ -11,6 +11,7 @@ Samuel de Souza Buters Pereira	17/0114040
 #include "glcm.h"
 #include "feature.h"
 #include "neuron.h"
+#include "backPropagation.c"
 
 int main(int argc) {
 	
@@ -180,6 +181,41 @@ int main(int argc) {
 			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaultTrain[j], 536);
 			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
+
+			double expectedValue;
+			double outputDelta = activationDerivative(*output) * (expectedValue - *output);
+			double hiddenLayerDelta = (double *) malloc(sizeof(double) * argc);
+
+			//Peso atualiza depois
+
+			//Hidden Layer
+			for(int neuronCounter = 0; neuronCounter < argc; neuronCounter++) {
+				double valueDerivative = activationDerivative(*(hiddenLayerOutput + neuronCounter));
+				double delta = valueDerivative * (outputDelta * outputNeuronLayer->w[0]);
+				*(hiddenLayerDelta + neuronCounter) = delta;
+
+				getList(hiddenNeuronLayer, neuronCounter)->b = getList(hiddenNeuronLayer, neuronCounter)->b + (2 * 0.1 * (*(hiddenLayerOutput + neuronCounter)) * delta);
+			}
+
+			//Input Layer
+			for(int neuronCounter = 0; neuronCounter < 536; neuronCounter++) {
+				double valueDerivative = activationDerivative(*(inputLayerOutput + neuronCounter));
+				double delta = valueDerivative * weightValueSum(hiddenNeuronLayer, hiddenLayerDelta, neuronCounter);
+
+				getList(inputNeuronLayer, neuronCounter)->b = getList(inputNeuronLayer, neuronCounter)->b + (2 * 0.1 * (*(inputLayerOutput + neuronCounter)) * delta);
+				for(int k = 0; k < 536; k++)
+					getList(inputNeuronLayer, neuronCounter)->w[k] = getList(inputNeuronLayer, neuronCounter)->w[k] + (2 * 0.1 * (*(inputLayerOutput + neuronCounter)) * delta);
+			}
+
+			//Hidden layer weight
+			for(int neuronCounter = 0; neuronCounter < argc; neuronCounter++) {
+				double valueDerivative = activationDerivative(*(hiddenLayerOutput + neuronCounter));
+				double delta = valueDerivative * (outputDelta * outputNeuronLayer->w[0]);
+				*(hiddenLayerDelta + neuronCounter) = delta;
+				for(int k = 0; k < 536; k++)
+					getList(hiddenNeuronLayer, neuronCounter)->w[k] = getList(hiddenNeuronLayer, neuronCounter)->w[k] + (2 * 0.1 * (*(hiddenLayerOutput + neuronCounter)) * delta);
+			}
+
 		}
 	}
 
