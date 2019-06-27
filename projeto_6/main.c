@@ -38,6 +38,7 @@ int main(int argc) {
 	double grassDist;
 	double asphaltDist;
 	double featureMatrixGrassTrain[25][536];
+	double featureMatrixAsphaultTrain[25][536];
 	
 	int i=0;
 	int taxaDeAcerto=0;
@@ -120,14 +121,10 @@ int main(int argc) {
      
 		normalizeFeatureVector(featureVectorGrassTrain);
 		
-		inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorGrassTrain, 536);
-		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
-		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 		
-		 for(int j=0; j<536; j++) {
-		 	featureMatrixGrassTrain[i][j]+=featureVectorGrassTrain[j];
-		 	
-		 }
+		for(int j=0; j<536; j++) {
+			featureMatrixGrassTrain[i][j] = featureVectorGrassTrain[j];
+		}
 
 		free(ilbp);
         
@@ -152,9 +149,9 @@ int main(int argc) {
 
 		normalizeFeatureVector(featureVectorAsphaltTrain);
 		
-		// for(int j=0; j<536; j++) {
-		// 	featureVectorAsphaltTrainSoma[j]+=featureVectorAsphaltTrain[j];
-		// }
+		for(int j=0; j<536; j++) {
+			featureMatrixAsplaultTrain[i][j] = featureVectorAsphaultTrain[j];
+		}
 
 		free(ilbp);
 
@@ -168,9 +165,22 @@ int main(int argc) {
 	}
 	printf("Treinamento: 100%%\n");
 
-	for(int j=0; j<536; j++) {
-		featureVectorGrassTrainSoma[j]=featureVectorGrassTrainSoma[j]/25.0;
-		featureVectorAsphaltTrainSoma[j]=featureVectorAsphaltTrainSoma[j]/25.0;
+	// for(int j=0; j<536; j++) {
+	// 	featureVectorGrassTrainSoma[j]=featureVectorGrassTrainSoma[j]/25.0;
+	// 	featureVectorAsphaltTrainSoma[j]=featureVectorAsphaltTrainSoma[j]/25.0;
+	// }
+
+	for(int i = 0; i < 1000; i++) {
+
+		for(int j = 0; j < 25; j++) {
+			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixGrassTrain[j], 536);
+			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
+
+			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaultTrain[j], 536);
+			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
+		}
 	}
 
 

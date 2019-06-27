@@ -9,7 +9,7 @@ double logistic(double x) {
     
     if(x >= 8) {
         return 1.0;
-    } else if(x <= 0) {
+    } else if(x <= -8) {
         return 0.0;
     }
 
@@ -65,7 +65,7 @@ void randomizeOneThing(List * layer, int number) {
 double * getLayerOutput(List * layer, int layerSize, double * inputVector, int inputVectorSize) {
     
     double * outputVector = (double *) malloc(layerSize*sizeof(double));
-    double aux;
+    double aux = 0;
 
     for(int i=0; i < layerSize; i++) {
         for(int j=0; j < inputVectorSize; j++) {
