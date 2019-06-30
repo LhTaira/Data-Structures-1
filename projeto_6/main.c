@@ -179,11 +179,11 @@ int main(int argc) {
 		for(int j = 0; j < 25; j++) {
 			printf("Epoca %d: %i%%\n", i+1, (j+1)*4);
 			
-			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixGrassTrain[j], 536);
-			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+			//inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixGrassTrain[j], 536);
+			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, featureMatrixGrassTrain[j], 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
-			// printf("esperado: 1, output: %.14lf\n", output);
+			// printf("esperado: 1, output: %.14lf\n", *output);
 			errorSum += pow(1.0 - *output, 2);
 			meanSquareError = errorSum/(examples++);
 
@@ -191,15 +191,15 @@ int main(int argc) {
 				break;
 			}
 
-			propagate(1, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, inputLayerOutput);
+			propagate(1, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, featureMatrixGrassTrain[j]);
 			
 			printf("MSE: %lf\n", meanSquareError);
 
-			inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaltTrain[j], 536);
-			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+			//inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureMatrixAsphaltTrain[j], 536);
+			hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, featureMatrixAsphaltTrain[j], 536);
 			output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 			
-			// printf("esperado: 0, output: %.14lf\n", output);
+			// printf("esperado: 0, output: %.14lf\n", *output);
 			errorSum += pow(0.0 - *output, 2);
 			meanSquareError = errorSum/(examples++);
 
@@ -207,7 +207,7 @@ int main(int argc) {
 				break;
 			}
 
-			propagate(0, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, inputLayerOutput);
+			propagate(0, output, outputNeuronLayer, hiddenNeuronLayer, inputNeuronLayer, argc, hiddenLayerOutput, featureMatrixAsphaltTrain[j]);
 
 			printf("MSE: %lf\n", meanSquareError);
 		}
@@ -253,8 +253,8 @@ int main(int argc) {
      
 		normalizeFeatureVector(featureVectorGrassTest);
 
-		inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorGrassTest, 536);
-		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+		// inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorGrassTest, 536);
+		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, featureVectorGrassTest, 536);
 		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
 		if((*output) <= 0.5) {
@@ -286,8 +286,8 @@ int main(int argc) {
 
 		normalizeFeatureVector(featureVectorAsphaltTest);
 
-		inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorAsphaltTest, 536);
-		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, inputLayerOutput, 536);
+		// inputLayerOutput = getLayerOutput(inputNeuronLayer, 536, featureVectorAsphaltTest, 536);
+		hiddenLayerOutput = getLayerOutput(hiddenNeuronLayer, argc, featureVectorAsphaltTest, 536);
 		output = getLayerOutput(outputNeuronLayer, 1, hiddenLayerOutput, argc);
 
 		if( (*output) <= 0.5) {

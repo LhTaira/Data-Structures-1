@@ -32,14 +32,14 @@ void propagate(short int expectedValue, double *output, List *outputNeuronLayer,
 			}
 
 			//Input Layer
-			for(int neuronCounter = 0; neuronCounter < 536; neuronCounter++) {
-				double valueDerivative = activationDerivative(*(inputLayerOutput + neuronCounter));
-				double delta = valueDerivative * weightValueSum(hiddenNeuronLayer, hiddenLayerDelta, neuronCounter);
+			// for(int neuronCounter = 0; neuronCounter < 536; neuronCounter++) {
+			// 	double valueDerivative = activationDerivative(*(inputLayerOutput + neuronCounter));
+			// 	double delta = valueDerivative * weightValueSum(hiddenNeuronLayer, hiddenLayerDelta, neuronCounter);
 
-				getList(inputNeuronLayer, neuronCounter)->element.b = getList(inputNeuronLayer, neuronCounter)->element.b + (2 * taxagay * (*(inputLayerOutput + neuronCounter)) * delta);
-				for(int k = 0; k < 536; k++)
-					getList(inputNeuronLayer, neuronCounter)->element.w[k] = getList(inputNeuronLayer, neuronCounter)->element.w[k] + (2 * taxagay * (*(inputLayerOutput + neuronCounter)) * delta);
-			}
+			// 	getList(inputNeuronLayer, neuronCounter)->element.b = getList(inputNeuronLayer, neuronCounter)->element.b + (2 * taxagay * (*(inputLayerOutput + neuronCounter)) * delta);
+			// 	for(int k = 0; k < 536; k++)
+			// 		getList(inputNeuronLayer, neuronCounter)->element.w[k] = getList(inputNeuronLayer, neuronCounter)->element.w[k] + (2 * taxagay * (*(inputLayerOutput + neuronCounter)) * delta);
+			// }
 
 			//Hidden layer weight
     		for(int neuronCounter = 0; neuronCounter < argc; neuronCounter++) {

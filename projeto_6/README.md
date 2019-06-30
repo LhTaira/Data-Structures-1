@@ -10,7 +10,11 @@
 
 * Rode o arquivo binário com o comando:
 
-    ```$ ./main ```
+    ```$ ./main x ```
+    
+    Em que x é o número de neurônios na camada oculta.
+
+    Ex: x = 10
 
 ## Interacões
 

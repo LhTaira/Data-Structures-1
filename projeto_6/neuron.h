@@ -32,9 +32,9 @@ void randomizeThings(List * layer, int number) {
     for(int i = 0; i < number; i++) {
 
         for(int j =0; j < 536; j++) {
-            element.w[j] = (rand() % 10) + 1;
+            element.w[j] = (rand() % 1500) + 1;
         }
-        element.b = -(rand() % 10) + 1;
+        element.b = -(rand() % 1500) + 1;
         // element.b = 1;
         
         if(i == 0) {
@@ -57,9 +57,9 @@ void randomizeOneThing(List * layer, int number) {
     srand(time(NULL));
 
     for(int i=0; i < number; i++) {
-        element.w[i] = (rand() % 10) + 1;
+        element.w[i] = (rand() % 1500) + 1;
     }
-    element.b = -(rand() % 10) + 1;
+    element.b = -(rand() % 1500) + 1;
     // element.b = 1;
 
     listConstructor(layer, element);
